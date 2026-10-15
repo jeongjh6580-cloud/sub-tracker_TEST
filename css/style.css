@@ -1,0 +1,348 @@
+/*
+ * 생산일지 대시보드의 전체 시각 스타일입니다.
+ * 색상과 간격은 아래 변수에서 조정할 수 있으며, 외부 폰트나 라이브러리는 사용하지 않습니다.
+ */
+:root {
+  color-scheme: light;
+  --ink: #202922;
+  --muted: #737d75;
+  --line: #dfddd4;
+  --paper: #f4f2ec;
+  --surface: #ffffff;
+  --green: #27684c;
+  --green-bright: #8ebc91;
+  --amber: #cf8537;
+  --red: #b84f42;
+  --font-ui: "Trebuchet MS", "Malgun Gothic", sans-serif;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(39, 104, 76, .055) .7px, transparent .7px);
+  background-size: 13px 13px;
+}
+
+button, input { font: inherit; }
+
+.app-shell { width: min(1320px, calc(100% - 64px)); margin: 0 auto; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 82px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand { display: inline-flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
+.brand-mark { display: flex; align-items: end; gap: 3px; width: 30px; height: 30px; padding: 5px; border-radius: 6px; background: var(--green); }
+.brand-mark span { flex: 1; border-radius: 2px 2px 0 0; background: #d4eadb; }
+.brand-mark span:nth-child(1) { height: 42%; }
+.brand-mark span:nth-child(2) { height: 72%; }
+.brand-mark span:nth-child(3) { height: 100%; }
+.brand-copy { display: grid; gap: 2px; }
+.brand-kicker, .page-footer, .panel-kicker, .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
+.brand-kicker { color: var(--green); }
+.brand-copy strong { font-size: 14px; }
+.topbar-meta { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+.status-dot, .status-indicator { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #58a675; }
+
+.intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 36px 0 24px; }
+.eyebrow { margin: 0 0 9px; color: var(--green); }
+h1 { margin: 0; font-size: clamp(27px, 3vw, 36px); line-height: 1.2; font-weight: 750; }
+.intro-copy { margin: 9px 0 0; color: var(--muted); font-size: 13px; }
+.upload-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 5px; color: white; background: var(--green); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .18s ease, transform .18s ease; }
+.upload-button:hover { background: #18563e; transform: translateY(-1px); }
+.upload-button:focus-within { outline: 3px solid rgba(35, 108, 80, .25); outline-offset: 2px; }
+.upload-icon { display: grid; width: 20px; height: 20px; place-items: center; border: 1px solid rgba(255,255,255,.6); border-radius: 50%; font-size: 16px; line-height: 1; }
+.upload-button input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+
+.file-status { display: flex; align-items: center; gap: 9px; min-height: 40px; padding: 0 12px; border: 1px solid #dce6dd; border-radius: 4px; background: rgba(255,255,255,.72); font-size: 12px; }
+.file-status.is-error { border-color: #ebc9c5; background: #fff8f7; color: #983c35; }
+.file-status.is-error .status-indicator { background: var(--red); }
+.status-detail { margin-left: auto; color: var(--muted); font-size: 11px; }
+.upload-help { margin: 7px 0 0; color: #87918b; font-size: 10px; }
+
+.summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.summary-card { min-height: 145px; padding: 17px 18px 15px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); animation: rise-in .45s both; }
+.summary-card:nth-child(2) { animation-delay: .04s; }
+.summary-card:nth-child(3) { animation-delay: .08s; }
+.summary-card:nth-child(4) { animation-delay: .12s; }
+.summary-card--dark { border-color: #263c31; color: white; background: #263c31; }
+.summary-card--loss { border-left: 3px solid var(--amber); }
+.card-heading { display: flex; align-items: center; justify-content: space-between; color: #68736c; font-size: 12px; font-weight: 650; }
+.summary-card--dark .card-heading { color: #c1d0c6; }
+.card-symbol { color: #9da7a0; font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.card-symbol--red { color: var(--red); }
+.card-symbol--green { color: var(--green); }
+.card-symbol--amber { color: var(--amber); }
+.metric-line { display: flex; align-items: baseline; gap: 6px; margin-top: 14px; }
+.metric-value { font-size: 34px; line-height: 1; font-weight: 740; font-variant-numeric: tabular-nums; }
+.metric-unit { color: var(--muted); font-size: 12px; }
+.summary-card--dark .metric-unit { color: #c1d0c6; }
+.metric-caption { margin: 12px 0 0; color: var(--muted); font-size: 10px; }
+.summary-card--dark .metric-caption { color: #afc0b5; }
+
+.chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.panel { border: 1px solid var(--line); border-radius: 5px; background: var(--surface); }
+.chart-panel { min-height: 286px; padding: 19px 20px 16px; }
+.panel-heading, .table-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.panel-kicker { margin: 0 0 5px; color: var(--green); font-size: 9px; }
+h2 { margin: 0; font-size: 16px; font-weight: 720; }
+.panel-unit { padding: 4px 8px; border-radius: 3px; color: #5d6c62; background: #eff3ef; font-size: 10px; }
+.bar-chart { display: grid; gap: 13px; margin-top: 24px; }
+.bar-row { display: grid; grid-template-columns: minmax(80px, 118px) minmax(40px, 1fr) 36px; align-items: center; gap: 10px; min-height: 17px; animation: fade-in .35s both; }
+.bar-label { overflow: hidden; color: #56625b; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track { height: 11px; overflow: hidden; border-radius: 2px; background: #edf0ed; }
+.bar-fill { height: 100%; min-width: 0; border-radius: inherit; background: var(--green); transform-origin: left; animation: grow-bar .55s cubic-bezier(.2,.7,.2,1) both; }
+.bar-row:nth-child(even) .bar-fill { background: #62a779; }
+.date-chart .bar-fill { background: #d88a37; }
+.date-chart .bar-row:nth-child(even) .bar-fill { background: #e7aa62; }
+.bar-value { color: #37443c; font-size: 11px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.empty-state { margin: 4px 0; color: #8b958e; font-size: 12px; }
+
+.table-panel { margin-top: 12px; padding: 19px 20px 13px; }
+.table-heading { padding-bottom: 15px; }
+.table-count { padding: 5px 9px; border: 1px solid var(--line); border-radius: 3px; color: #617067; font-size: 10px; font-variant-numeric: tabular-nums; }
+.table-scroll { max-height: 440px; overflow: auto; border: 1px solid var(--line); border-radius: 3px; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 11px; white-space: nowrap; }
+.data-table th { position: sticky; top: 0; z-index: 1; padding: 10px 12px; border-bottom: 1px solid #d7dfd9; color: #526057; background: #f1f4f1; font-size: 10px; font-weight: 700; text-align: left; }
+.data-table td { max-width: 280px; overflow: hidden; padding: 9px 12px; border-bottom: 1px solid #edf0ed; color: #39443d; text-overflow: ellipsis; }
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.data-table tbody tr:hover td { background: #f7f9f7; }
+.data-table tbody tr.is-ng td { background: #fff0ee; }
+.data-table tbody tr.is-ng:hover td { background: #ffe7e4; }
+.data-table tbody tr.is-ng td:first-child { box-shadow: inset 3px 0 var(--red); }
+.table-empty { display: grid; min-height: 175px; place-content: center; justify-items: center; gap: 8px; color: #869189; text-align: center; }
+.table-empty strong { color: #526057; font-size: 12px; }
+.table-empty span:last-child { font-size: 10px; }
+.empty-mark { display: grid; width: 29px; height: 29px; place-items: center; margin-bottom: 2px; border: 1px dashed #bdc8bf; border-radius: 50%; color: var(--green); font-size: 19px; }
+.table-note { display: flex; align-items: center; gap: 7px; margin: 11px 0 0; color: var(--muted); font-size: 10px; }
+.ng-key { width: 9px; height: 9px; border-radius: 2px; background: #e6a09a; }
+.page-footer { display: flex; justify-content: space-between; gap: 16px; padding: 23px 0 28px; color: #87918a; font-size: 9px; letter-spacing: .45px; }
+
+/* 데이터가 로드될 때 막대와 카드가 짧게 나타나도록 해, 값의 갱신을 자연스럽게 드러냅니다. */
+@keyframes rise-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes grow-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (max-width: 900px) {
+  .app-shell { width: min(100% - 40px, 760px); }
+  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chart-grid { grid-template-columns: 1fr; }
+  .chart-panel { min-height: 240px; }
+}
+
+@media (max-width: 560px) {
+  .app-shell { width: calc(100% - 28px); }
+  .topbar { min-height: 68px; }
+  .topbar-meta { font-size: 0; }
+  .topbar-meta .status-dot { width: 8px; height: 8px; }
+  .intro { align-items: stretch; flex-direction: column; gap: 17px; padding: 27px 0 18px; }
+  .intro-copy { max-width: 290px; line-height: 1.6; }
+  .upload-button { align-self: flex-start; }
+  .file-status { flex-wrap: wrap; padding: 9px 10px; }
+  .status-detail { width: 100%; margin-left: 16px; }
+  .summary-grid { gap: 8px; margin-top: 15px; }
+  .summary-card { min-height: 128px; padding: 13px 12px; }
+  .metric-value { font-size: 29px; }
+  .metric-caption { line-height: 1.45; }
+  .chart-grid, .table-panel { margin-top: 9px; }
+  .chart-panel, .table-panel { padding-right: 13px; padding-left: 13px; }
+  .bar-row { grid-template-columns: minmax(66px, 94px) minmax(30px, 1fr) 30px; gap: 7px; }
+  .bar-label { font-size: 10px; }
+  .page-footer { align-items: flex-start; flex-direction: column; gap: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* 구독 관리 화면의 기본 너비와 상단 브랜드 영역입니다. */
+.app-shell { width: min(1160px, calc(100% - 56px)); margin: 0 auto; }
+.masthead { display: flex; align-items: center; justify-content: space-between; min-height: 76px; border-bottom: 1px solid var(--line); }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.brand-mark { position: relative; display: flex; align-items: end; justify-content: space-between; width: 30px; height: 30px; padding: 7px; border: 1px solid #bdcdbd; border-radius: 9px 9px 9px 3px; background: #e4ecdf; }
+.brand-mark span { width: 5px; border-radius: 3px 3px 1px 1px; background: var(--green); }
+.brand-mark span:first-child { height: 10px; }
+.brand-mark span:last-child { height: 15px; background: var(--amber); }
+.brand-name { font-size: 15px; font-weight: 800; }
+.brand-name span { margin-left: 3px; color: var(--green); }
+.local-badge { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; }
+.local-dot { width: 7px; height: 7px; border-radius: 50%; background: #67a878; }
+
+/* 제목 영역은 화면 목적을 빠르게 알리고, 데스크톱에서는 부가 문구를 오른쪽에 둡니다. */
+.page-intro { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 35px 0 23px; }
+.page-intro .eyebrow { margin: 0 0 11px; color: var(--green); font-size: 9px; font-weight: 800; letter-spacing: 1.35px; }
+.page-intro .eyebrow span { padding: 0 4px; color: var(--amber); }
+.page-intro h1 { margin: 0; color: var(--ink); font-size: 33px; line-height: 1.22; font-weight: 750; }
+.mobile-break { display: none; }
+.intro-note { margin: 0 0 3px; color: var(--muted); font-size: 12px; line-height: 1.7; text-align: right; }
+
+/* 상단의 세 요약 카드는 각기 다른 색 포인트로 정보의 성격을 구분합니다. */
+.summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; margin: 0 0 14px; }
+.summary-card { min-height: 130px; padding: 17px 19px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); animation: rise-in .4s both; }
+.summary-card--primary { border-color: #2c4936; color: #fff; background: #2c4936; }
+.summary-card--annual { border-top: 3px solid var(--amber); }
+.summary-card--upcoming { border-top: 3px solid #7eaa83; }
+.summary-label { display: flex; align-items: center; gap: 8px; color: #69766d; font-size: 11px; font-weight: 700; }
+.summary-card--primary .summary-label { color: #d3e0d5; }
+.summary-index { color: var(--amber); font-size: 9px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.summary-value { display: flex; align-items: baseline; gap: 7px; margin-top: 18px; }
+.summary-value strong { overflow-wrap: anywhere; font-size: 27px; line-height: 1; font-weight: 750; font-variant-numeric: tabular-nums; }
+.summary-value span { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.summary-card--primary .summary-value span { color: #bed0c2; }
+.summary-caption { margin: 11px 0 0; color: #879189; font-size: 10px; }
+.summary-card--primary .summary-caption { color: #b5c7b9; }
+.app-message { margin: 0 0 13px; padding: 10px 12px; border: 1px solid #c9dfce; border-radius: 4px; color: #285d3b; background: #f1f8f1; font-size: 12px; }
+.app-message--error { border-color: #e7c7c1; color: #923d35; background: #fff5f3; }
+
+/* 본문은 큰 구독 목록과 오른쪽 입력/분류 영역으로 나뉩니다. */
+.workspace-grid { display: grid; grid-template-areas: "list side"; grid-template-columns: minmax(0, 1fr) 330px; align-items: start; gap: 13px; }
+.side-rail { display: grid; grid-area: side; gap: 13px; min-width: 0; }
+.panel { min-width: 0; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); }
+.form-panel, .category-panel, .subscriptions-panel { padding: 18px; }
+.subscriptions-panel { grid-area: list; }
+.section-heading, .list-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.section-heading { margin-bottom: 16px; }
+.section-heading--compact { margin-bottom: 13px; }
+.section-kicker { margin: 0 0 5px; color: var(--green); font-size: 9px; font-weight: 800; letter-spacing: 1.15px; }
+.section-heading h2, .list-heading h2 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 750; }
+.heading-mark { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; color: white; background: var(--green); font-size: 17px; }
+
+/* 폼 필드 높이와 너비를 고정해 모바일에서도 눌러 입력하기 편하게 합니다. */
+#subscription-form { display: grid; gap: 8px; }
+.field-label { margin-top: 3px; color: #515e54; font-size: 11px; font-weight: 700; }
+#subscription-form input, #subscription-form select { width: 100%; min-width: 0; height: 40px; padding: 0 11px; border: 1px solid #d9ded8; border-radius: 4px; outline: none; color: var(--ink); background: #fff; font-size: 12px; }
+#subscription-form input:focus, #subscription-form select:focus { border-color: #6e9b79; box-shadow: 0 0 0 3px rgba(39, 104, 76, .1); }
+#subscription-form input::placeholder { color: #a1aaa3; }
+.field-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .82fr); gap: 9px; }
+.field-group { display: grid; gap: 8px; min-width: 0; }
+.amount-input { position: relative; }
+.amount-input > span { position: absolute; top: 50%; left: 11px; z-index: 1; color: #758178; font-size: 12px; transform: translateY(-50%); }
+.amount-input input { padding-left: 27px !important; }
+.form-actions { display: flex; gap: 8px; margin-top: 6px; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 42px; padding: 0 14px; border: 0; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .16s ease, transform .16s ease; }
+.button:focus-visible, .icon-button:focus-visible { outline: 3px solid rgba(39, 104, 76, .24); outline-offset: 2px; }
+.button--primary { flex: 1; color: white; background: var(--green); }
+.button--primary:hover { background: #1c533a; transform: translateY(-1px); }
+.button--primary span:last-child { font-size: 15px; }
+.button--quiet { color: #66736a; background: #eef1ec; }
+.button--quiet:hover { background: #e4e9e3; }
+.form-footnote { margin: 12px 0 0; color: #929b93; font-size: 9px; line-height: 1.5; }
+
+/* 카테고리 막대의 폭은 데이터에 따라 ui.js에서 퍼센트로 지정합니다. */
+.category-breakdown { display: grid; gap: 13px; }
+.category-row { display: grid; grid-template-columns: minmax(0, 1fr) 38px; gap: 7px 10px; align-items: center; }
+.category-row-labels { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; min-width: 0; grid-column: 1 / -1; }
+.category-name { overflow: hidden; color: #4e5a51; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.category-amount { color: #7c877e; font-size: 10px; white-space: nowrap; }
+.category-track { height: 8px; overflow: hidden; border-radius: 2px; background: #edf0e9; }
+.category-fill { height: 100%; border-radius: inherit; animation: grow-bar .5s ease both; transform-origin: left; }
+.category-fill--1 { background: #397953; }
+.category-fill--2 { background: #d4873d; }
+.category-fill--3 { background: #7e9c70; }
+.category-fill--4 { background: #bb6852; }
+.category-fill--5 { background: #719b9a; }
+.category-percent { color: #59665d; font-size: 10px; text-align: right; font-variant-numeric: tabular-nums; }
+.empty-note { margin: 0; color: #929b93; font-size: 11px; line-height: 1.6; }
+
+/* 구독 목록은 카드 단위로 가격과 결제 정보를 훑어볼 수 있게 배치합니다. */
+.list-heading { padding-bottom: 14px; border-bottom: 1px solid #e9e9e3; }
+.count-pill { padding: 5px 9px; border: 1px solid var(--line); border-radius: 3px; color: #627067; font-size: 10px; font-variant-numeric: tabular-nums; }
+.subscription-list { display: grid; gap: 8px; padding-top: 12px; }
+.subscription-card { padding: 13px 14px; border: 1px solid #e7e8e1; border-radius: 4px; background: #fff; animation: rise-in .28s both; }
+.subscription-card:hover { border-color: #c9d7c9; background: #fcfdfa; }
+.subscription-card-top, .subscription-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.subscription-identity { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.subscription-icon { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 9px 9px 9px 3px; color: #315c3f; background: #e8efe5; font-size: 13px; font-weight: 800; }
+.subscription-card:nth-child(3n) .subscription-icon { color: #9b582b; background: #f8eadc; }
+.subscription-card:nth-child(3n + 2) .subscription-icon { color: #426d70; background: #e3eeee; }
+.subscription-name-group { display: grid; gap: 4px; min-width: 0; }
+.subscription-name { overflow: hidden; margin: 0; color: var(--ink); font-size: 13px; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.category-tag { width: fit-content; max-width: 100%; overflow: hidden; padding: 2px 6px; border-radius: 2px; color: #758178; background: #f1f2ee; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.card-actions { display: flex; flex: 0 0 auto; gap: 4px; }
+.icon-button { display: grid; width: 30px; height: 30px; place-items: center; border: 0; border-radius: 4px; color: #68756c; background: transparent; font-size: 16px; cursor: pointer; }
+.icon-button:hover { color: var(--green); background: #edf3ed; }
+.icon-button--delete:hover { color: var(--red); background: #fff0ed; }
+.subscription-card-bottom { margin: 12px 0 0 44px; padding-top: 10px; border-top: 1px solid #eff0eb; }
+.subscription-price { display: flex; align-items: baseline; gap: 5px; min-width: 0; }
+.subscription-price strong { overflow-wrap: anywhere; color: #25332a; font-size: 16px; font-variant-numeric: tabular-nums; }
+.subscription-price span { color: #8a948c; font-size: 10px; white-space: nowrap; }
+.payment-due { display: flex; align-items: center; gap: 8px; }
+.payment-date { color: #7b867d; font-size: 10px; white-space: nowrap; }
+.payment-day { min-width: 39px; padding: 4px 6px; border-radius: 3px; color: #536e53; background: #edf4ea; font-size: 10px; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.payment-day--today { color: #a14e32; background: #fff0e5; }
+.payment-day--past { color: #929a93; background: #f1f2ef; }
+.empty-list { display: grid; min-height: 235px; align-content: center; justify-items: center; gap: 8px; color: #8a958c; text-align: center; }
+.empty-illustration { display: grid; width: 42px; height: 42px; place-items: center; margin-bottom: 3px; border: 1px dashed #b7c5b7; border-radius: 14px 14px 14px 4px; color: var(--green); background: #f2f6ef; font-size: 21px; }
+.empty-list strong { color: #435047; font-size: 12px; }
+.empty-list > span:last-child { font-size: 10px; }
+.list-footnote { display: flex; align-items: center; gap: 7px; margin: 12px 0 0; color: #8a958c; font-size: 10px; }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+.page-footer { display: flex; justify-content: space-between; gap: 16px; padding: 23px 0 28px; color: #879189; font-size: 9px; font-weight: 700; letter-spacing: .55px; }
+
+/* 카드가 나타나고 비중 막대가 채워지는 짧은 효과이며, 줄이기 설정을 따릅니다. */
+@keyframes rise-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes grow-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (max-width: 850px) {
+  .app-shell { width: min(100% - 40px, 700px); }
+  .workspace-grid { grid-template-areas: "side" "list"; grid-template-columns: minmax(0, 1fr); }
+  .side-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .subscriptions-panel { min-height: 250px; }
+}
+
+@media (max-width: 560px) {
+  .app-shell { width: calc(100% - 28px); }
+  .masthead { min-height: 64px; }
+  .local-badge { font-size: 10px; }
+  .page-intro { align-items: flex-start; flex-direction: column; gap: 10px; padding: 26px 0 17px; }
+  .page-intro h1 { font-size: 27px; }
+  .mobile-break { display: initial; }
+  .intro-note { font-size: 11px; line-height: 1.55; text-align: left; }
+  .intro-note br { display: none; }
+  .summary-grid { gap: 7px; margin-bottom: 10px; }
+  .summary-card { min-height: 105px; padding: 12px 9px; }
+  .summary-label { align-items: flex-start; gap: 5px; font-size: 10px; line-height: 1.35; }
+  .summary-index { padding-top: 1px; font-size: 8px; }
+  .summary-value { flex-wrap: wrap; gap: 3px; margin-top: 14px; }
+  .summary-value strong { font-size: 19px; }
+  .summary-value span { font-size: 9px; }
+  .summary-caption { display: none; }
+  .side-rail { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  .workspace-grid { gap: 9px; }
+  .form-panel, .category-panel, .subscriptions-panel { padding: 14px; }
+  .field-row { grid-template-columns: minmax(0, 1fr) minmax(0, .82fr); gap: 8px; }
+  .subscription-card { padding: 11px 10px; }
+  .subscription-card-bottom { margin-left: 0; }
+  .subscription-price strong { font-size: 15px; }
+  .payment-due { gap: 5px; }
+  .payment-date { font-size: 9px; }
+  .payment-day { min-width: 35px; padding-right: 4px; padding-left: 4px; font-size: 9px; }
+  .page-footer { align-items: flex-start; flex-direction: column; gap: 7px; }
+}
+
+@media (max-width: 360px) {
+  .app-shell { width: calc(100% - 22px); }
+  .summary-card { padding-right: 7px; padding-left: 7px; }
+  .summary-value strong { font-size: 17px; }
+  .subscription-card-top { gap: 5px; }
+  .subscription-identity { gap: 7px; }
+  .card-actions { gap: 0; }
+  .icon-button { width: 27px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
